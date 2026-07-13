@@ -1,0 +1,315 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html, body{
+    overflow-x:hidden;
+}
+
+body{
+    background-image: url("assets/cenario.png");
+    background-size:cover;
+    background-position:center bottom;
+    background-repeat:no-repeat;
+}
+
+#menu{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    gap:30px;
+}
+
+#menu h1{
+    color:white;
+    font-size:50px;
+}
+
+#doormsg{
+    color:white;
+}
+
+.logo{
+    text-align: center;
+}
+
+.logo img{
+    width: min(500px, 90vw);
+    max-width: 100%;
+    height: auto;
+}
+
+
+.doors{
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(16px, 6vw, 80px);
+    transform: translateY(-30px);
+}
+
+.door img{
+    width: clamp(90px, 22vw, 180px);
+    cursor:pointer;
+    transition:.3s;
+}
+
+.door:first-child img{
+    margin-bottom: -9.44%;
+}
+
+.door img:hover{
+    transform:scale(1.1);
+}
+
+#player-preview{
+    position:absolute;
+    left: clamp(60px, 19vw, 250px);
+    bottom: clamp(120px, 22vh, 205px);
+}
+
+#previewSprite{
+    width: clamp(50px, 8vw, 100px);
+}
+
+#xl125{
+    position:absolute;
+    left: clamp(0px, 2vw, 15px);
+    bottom: clamp(55px, 11vh, 90px);
+    width: clamp(130px, 20vw, 250px);
+}
+
+#game{
+    display:none;
+    width:100vw;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:#111;
+}
+
+#jumpBtn{
+    position:absolute;
+    right:40px;
+    bottom:40px;
+    z-index:20;
+    padding:15px 30px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+#runBtn{
+    position:absolute;
+    left:40px;
+    bottom:40px;
+    z-index:20;
+    padding:15px 30px;
+    font-size:20px;
+    cursor:pointer;
+    user-select:none;
+}
+
+/* Resolução virtual fixa: toda a física em pixel do script.js
+   funciona dentro deste "palco", que depois é escalado inteiro
+   para caber na tela (ver resizeStage() em script.js). */
+#stage{
+    position:absolute;
+    top:0;
+    left:0;
+    width:1280px;
+    height:720px;
+    transform-origin:0 0;
+}
+
+#background{
+    position:absolute;
+    left:260px;
+    bottom:50px;
+    width:710px;
+    height:300px;
+    display:block;
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
+}
+
+#scene{
+    position:absolute;
+    inset:0;
+}
+
+#nuvem{
+    position:absolute;
+    bottom:320px;
+    left:310px;
+    width:100px;
+
+}
+
+#leftPlatform{
+    position:absolute;
+    bottom:32px;
+    left: 240px;
+    width:300px;
+}
+
+#bridge{
+    position:absolute;
+    bottom:170px;
+    left:488px;
+    width:250px;
+    z-index:2;
+}
+
+#buraco{
+    position:absolute;
+    bottom:33px;
+    left:477px;
+    width:280px;
+}
+
+#rightPlatform{
+    position:absolute;
+    bottom:30px;
+    left:700px;
+    width:300px;
+}
+
+#trophy{
+    position:absolute;
+    bottom:206px;
+    left:860px;
+    width:100px;
+}
+
+#flag{
+    display:none;
+    position:absolute;
+    bottom:214px;
+    left:750px;
+    width:60px;
+}
+
+#reward{
+    display:none;
+    position:absolute;
+    bottom:300px;
+    left:780px;
+    width:120px;
+}
+
+#player{
+    position:absolute;
+    left:180px;
+    bottom:100px;
+    width:90px;
+    height:150px;
+    object-fit:contain;
+    object-position:bottom center;
+}
+
+/* Frames de pulo/queda têm mais "espalhamento" horizontal
+   (braços/pernas abertos) e ocupam menos altura do quadro,
+   então precisam de uma caixa mais larga para não parecerem
+   menores que o idle/walk. */
+#player.walking{
+    width:110px;
+}
+
+#player.jumping{
+    width:115px;
+}
+
+#player.falling{
+    width:125px;
+}
+
+/* Deitado no fundo do buraco (rip.png é bem mais largo que alto) */
+#player.rip{
+    width:170px;
+    height:64px;
+}
+
+#gameOver{
+    display:none;
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    justify-content:center;
+    align-items:center;
+}
+
+.panel{
+    text-align:center;
+}
+
+#gameOverImage{
+    width:600px;
+    max-width:90%;
+}
+
+.buttons{
+    margin-top:20px;
+}
+
+button{
+    padding:15px 25px;
+    font-size:18px;
+    margin:5px;
+    cursor:pointer;
+}
+
+
+/* ========================================
+   RESPONSIVO — TELAS PEQUENAS (celular)
+   Ajusta só o que usa posição/tamanho fixo em px
+   e não escala sozinho (o #stage do jogo já é
+   responsivo pelo resizeStage() em script.js).
+   ======================================== */
+@media (max-width: 768px){
+
+    #xl125{
+        bottom: 73px;
+        width: 145px;
+    }
+
+    #player-preview{
+       margin-left: 50px;
+       bottom: 156px;
+    }
+
+    .doors{
+        margin-left: 180px;
+        margin-bottom: 20px;
+    }
+
+    #jumpBtn,
+    #runBtn{
+        padding: 10px 18px;
+        font-size: 16px;
+    }
+
+    #jumpBtn{
+        right: 12px;
+        bottom: 12px;
+    }
+
+    #runBtn{
+        left: 12px;
+        bottom: 12px;
+    }
+
+    #gameOverImage{
+        width: 400px;
+    }
+
+
+    button{
+        padding: 12px 18px;
+        font-size: 16px;
+    }
+}

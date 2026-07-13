@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Jornada do Carlos</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="menu">
+
+    <div class="logo">
+        <img src="assets/namegame.png">
+    </div>
+
+    <div id="player-preview">
+        <img id="previewSprite" src="assets/idle_1.png">
+    </div>
+
+    <div id="xl125">
+        <img id="xl125" src="assets/xl125.png">
+    </div>
+
+    <div class="doors">
+
+        <div class="door" onclick="startGame('estagio')">
+            <img src="assets/door_estagio.png">
+        </div>
+
+        <div class="door" onclick="startGame('junior')">
+            <img src="assets/door_junior.png">
+        </div>
+
+    </div>
+
+</div>
+
+<div id="game">
+
+    <div id="stage">
+
+        <img id="background" src="assets/fundo_cidade.png">
+
+        <div id="scene">
+
+            <img id="nuvem"
+                 src="assets/nuvem.png">
+
+            <img id="leftPlatform"
+                 src="assets/plataforma_esquerda.png">
+
+            <img id="bridge"
+                 src="assets/ponte_quebrada.png">
+
+            <img id="buraco"
+                 src="assets/buraco.png">
+
+            <img id="rightPlatform"
+                 src="assets/plataforma_direita.png">
+
+            <img id="trophy"
+                 src="assets/trofeu.png">
+
+            <img id="flag">
+
+            <img id="reward">
+
+            <img id="player"
+                 src="assets/idle_1.png">
+
+        </div>
+
+    </div>
+
+    <button id="runBtn">Correr</button>
+
+    <button id="jumpBtn" onclick="tryJump()">Pular</button>
+
+</div>
+
+<div id="gameOver">
+
+    <div class="panel">
+
+        <img id="gameOverImage"
+             src="">
+
+        <div class="buttons">
+
+            <button onclick="retry()">
+                Tentar novamente
+            </button>
+
+            <button onclick="backMenu()">
+                Voltar ao início
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
