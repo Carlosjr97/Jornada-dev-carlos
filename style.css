@@ -18,6 +18,7 @@ body{
 #menu{
     width:100vw;
     height:100vh;
+    height:100dvh;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -49,12 +50,11 @@ body{
 .doors{
     display: flex;
     align-items: flex-end;
-    gap: clamp(16px, 6vw, 80px);
-    transform: translateY(-30px);
+    margin-top: -40px;
 }
 
 .door img{
-    width: clamp(90px, 22vw, 180px);
+    width:180px;
     cursor:pointer;
     transition:.3s;
 }
@@ -69,25 +69,26 @@ body{
 
 #player-preview{
     position:absolute;
-    left: clamp(60px, 19vw, 250px);
-    bottom: clamp(120px, 22vh, 205px);
+    left:250px;
+    bottom:195px;
 }
 
 #previewSprite{
-    width: clamp(50px, 8vw, 100px);
+    width:100px;
 }
 
 #xl125{
     position:absolute;
-    left: clamp(0px, 2vw, 15px);
-    bottom: clamp(55px, 11vh, 90px);
-    width: clamp(130px, 20vw, 250px);
+    left:15px;
+    bottom:87px;
+    width:250px;
 }
 
 #game{
     display:none;
     width:100vw;
     height:100vh;
+    height:100dvh;
     position:relative;
     overflow:hidden;
     background:#111;
@@ -266,50 +267,82 @@ button{
 
 /* ========================================
    RESPONSIVO — TELAS PEQUENAS (celular)
-   Ajusta só o que usa posição/tamanho fixo em px
-   e não escala sozinho (o #stage do jogo já é
-   responsivo pelo resizeStage() em script.js).
+   Os valores abaixo eram px fixos calibrados numa
+   única largura de tela (~390px), por isso só
+   ficavam certos num aparelho específico. Convertidos
+   para vw (% da largura da viewport) eles escalam de
+   forma contínua em qualquer largura de celular, em
+   vez de "pular" só num breakpoint.
+   (o #stage do jogo já é responsivo pelo resizeStage()
+   em script.js e não precisa disso).
    ======================================== */
-@media (max-width: 768px){
+   @media (max-width:768px){
 
     #xl125{
-        bottom: 73px;
-        width: 145px;
+        left:-0.26vw;
+        bottom:21.3vw;
+        width:37.2vw;
     }
 
     #player-preview{
-       margin-left: 50px;
-       bottom: 156px;
+        left:29.5vw;
+        bottom:45.4vw;
+    }
+
+    #previewSprite{
+        width:15.4vw;
     }
 
     .doors{
-        margin-left: 180px;
-        margin-bottom: 20px;
+        margin-left:46.2vw;
+        margin-bottom:-29vw;
+    }
+
+    .door img{
+        width:28.2vw;
     }
 
     #jumpBtn,
     #runBtn{
-        padding: 10px 18px;
-        font-size: 16px;
+        padding:2.5vw 4.6vw;
+        font-size:4.1vw;
     }
 
     #jumpBtn{
-        right: 12px;
-        bottom: 12px;
+        right:3vw;
+        bottom:22.5vh;
     }
 
     #runBtn{
-        left: 12px;
-        bottom: 12px;
+        left:3vw;
+        bottom:22.5vh;
     }
 
     #gameOverImage{
-        width: 400px;
+        width:400px;
     }
 
-
     button{
-        padding: 12px 18px;
-        font-size: 16px;
+        padding:12px 18px;
+        font-size:16px;
+    }
+}
+
+/* Celular em paisagem (deitado): pouca altura disponível.
+   Reaproxima os controles do jogo do fundo da tela e
+   encolhe o espaçamento do menu pra caber sem cortar nada. */
+@media (max-height:500px) and (orientation:landscape){
+
+    #menu{
+        gap:12px;
+    }
+
+    .logo img{
+        width:min(320px, 60vh);
+    }
+
+    #jumpBtn,
+    #runBtn{
+        bottom:4vh;
     }
 }
