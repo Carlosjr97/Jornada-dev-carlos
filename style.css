@@ -9,10 +9,7 @@ html, body{
 }
 
 body{
-    background-image: url("assets/cenario.png");
-    background-size:cover;
-    background-position:center bottom;
-    background-repeat:no-repeat;
+    background:#0b1830;
 }
 
 #menu{
@@ -22,8 +19,9 @@ body{
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start;
     position:relative;
+    overflow:hidden;
     gap:30px;
 }
 
@@ -36,7 +34,15 @@ body{
     color:white;
 }
 
+/* A logo fica presa perto do topo (não centralizada na tela
+   toda), porque #scenario é ancorado embaixo por conta própria
+   (ver mais abaixo). Se a logo fosse centralizada na altura
+   inteira da tela, em telas baixas/largas ela acaba descendo
+   até colidir com as portas. */
 .logo{
+    position:relative;
+    z-index:2;
+    padding-top:clamp(16px, 5vh, 64px);
     text-align: center;
 }
 
@@ -46,11 +52,70 @@ body{
     height: auto;
 }
 
+/* ========================================
+   PALCO DO MENU (chão único e responsivo)
+   ========================================
+   Mesma ideia do #stage do jogo (ver resizeStage() em
+   script.js): tudo aqui dentro é posicionado em pixel
+   fixo usando a resolução real de cenario.png (1774x887).
+   Um único fator de escala (resizeScenario() em script.js)
+   redimensiona o palco inteiro pra caber na tela, ancorado
+   embaixo e centralizado — por isso moto, personagem e
+   portas ficam sempre grudados na mesma linha do chão,
+   em qualquer tamanho de tela, sem precisar de números
+   separados por @media. */
+#scenario{
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:1774px;
+    height:887px;
+    transform-origin:50% 100%;
+    z-index:1;
+}
+
+#cenarioImg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    pointer-events:none;
+}
+
+/* Linha do chão (topo da grama) dentro do palco de 1774x887.
+   O grupo moto + personagem + portas fica centralizado no
+   palco (entre x=434 e x=1339) de propósito: como o palco
+   também é centralizado na tela, o grupo inteiro já nasce
+   centralizado, sem precisar de nenhum ajuste extra. Ver
+   SCENARIO_CONTENT_WIDTH em script.js — é essa faixa que
+   garante que moto e portas nunca saiam cortadas da tela. */
+#xl125,
+#player-preview,
+.doors{
+    position:absolute;
+    bottom:190px;
+}
+
+#xl125{
+    left:434px;
+    width:320px;
+}
+
+#player-preview{
+    left:804px;
+}
+
+#previewSprite{
+    width:100px;
+    display:block;
+}
 
 .doors{
-    display: flex;
-    align-items: flex-end;
-    margin-top: -40px;
+    left:954px;
+    display:flex;
+    align-items:flex-end;
+    gap:25px;
 }
 
 .door img{
@@ -59,29 +124,8 @@ body{
     transition:.3s;
 }
 
-.door:first-child img{
-    margin-bottom: -9.44%;
-}
-
 .door img:hover{
     transform:scale(1.1);
-}
-
-#player-preview{
-    position:absolute;
-    left:250px;
-    bottom:195px;
-}
-
-#previewSprite{
-    width:100px;
-}
-
-#xl125{
-    position:absolute;
-    left:15px;
-    bottom:87px;
-    width:250px;
 }
 
 #game{
@@ -235,6 +279,29 @@ body{
     height:64px;
 }
 
+#tutorial{
+    display:none;
+    position:absolute;
+    inset:0;
+    z-index:30;
+    background:rgba(0,0,0,.75);
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    text-align:center;
+    padding:20px;
+}
+
+.tutorial-box{
+    color:white;
+    max-width:600px;
+}
+
+.tutorial-box p{
+    margin:10px 0;
+    font-size:20px;
+}
+
 #gameOver{
     display:none;
     position:absolute;
@@ -267,40 +334,11 @@ button{
 
 /* ========================================
    RESPONSIVO — TELAS PEQUENAS (celular)
-   Os valores abaixo eram px fixos calibrados numa
-   única largura de tela (~390px), por isso só
-   ficavam certos num aparelho específico. Convertidos
-   para vw (% da largura da viewport) eles escalam de
-   forma contínua em qualquer largura de celular, em
-   vez de "pular" só num breakpoint.
-   (o #stage do jogo já é responsivo pelo resizeStage()
-   em script.js e não precisa disso).
+   #scenario (moto, personagem, portas) já escala sozinho
+   via resizeScenario() em script.js, igual ao #stage do
+   jogo — não precisa de valores separados aqui.
    ======================================== */
    @media (max-width:768px){
-
-    #xl125{
-        left:-0.26vw;
-        bottom:21.3vw;
-        width:37.2vw;
-    }
-
-    #player-preview{
-        left:29.5vw;
-        bottom:45.4vw;
-    }
-
-    #previewSprite{
-        width:15.4vw;
-    }
-
-    .doors{
-        margin-left:46.2vw;
-        margin-bottom:-29vw;
-    }
-
-    .door img{
-        width:28.2vw;
-    }
 
     #jumpBtn,
     #runBtn{
@@ -324,6 +362,10 @@ button{
 
     button{
         padding:12px 18px;
+        font-size:16px;
+    }
+
+    .tutorial-box p{
         font-size:16px;
     }
 }

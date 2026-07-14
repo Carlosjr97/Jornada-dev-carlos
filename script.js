@@ -67,9 +67,79 @@ resizeStage();
 
 
 // ========================================
+// ESCALA DO PALCO DO MENU (moto, personagem e portas)
+// ========================================
+// Mesma técnica do #stage: xl125, player-preview e .doors
+// são posicionados em pixel fixo dentro de um palco do
+// tamanho real de cenario.png (1774x887). O fator de escala
+// faz esse palco cobrir a tela (como um background-size:cover),
+// sempre ancorado embaixo e centralizado, então o "chão" nunca
+// desalinha entre telas.
+const scenario = document.getElementById("scenario");
+const SCENARIO_WIDTH = 1774;
+const SCENARIO_HEIGHT = 887;
+
+// Faixa horizontal onde moto + personagem + portas ficam
+// (ver style.css: vai de x=434 até x=1339, ou seja 905px).
+// Usada como teto pro zoom em telas estreitas (celular em pé).
+// Fica bem folgada (1150 > 905) de propósito, como margem de
+// segurança pra moto e portas nunca saírem cortadas da tela.
+const SCENARIO_CONTENT_WIDTH = 1150;
+
+function resizeScenario(){
+
+    if(!scenario) return;
+
+    const coverScale = Math.max(
+        window.innerWidth / SCENARIO_WIDTH,
+        window.innerHeight / SCENARIO_HEIGHT
+    );
+
+    const contentFitScale = window.innerWidth / SCENARIO_CONTENT_WIDTH;
+
+    const scale = Math.min(coverScale, contentFitScale);
+
+    scenario.style.transform = `translateX(-50%) scale(${scale})`;
+}
+
+window.addEventListener("resize", resizeScenario);
+resizeScenario();
+
+// Fecha tutorial ao clicar/tocar (para mobile)
+document.getElementById("tutorial").addEventListener("click", () => {
+    document.getElementById("tutorial").style.display = "none";
+    gameActive = true;
+    startRunLoop();
+});
+
+// Botão "Pular" - tratal tutorial e pulo
+function handleJumpBtnClick(){
+    // Se tutorial está aberto, fecha
+    const tutorial = document.getElementById("tutorial");
+    if(tutorial.style.display !== "none" && tutorial.style.display !== ""){
+        tutorial.style.display = "none";
+        gameActive = true;
+        startRunLoop();
+        return;
+    }
+
+    tryJump();
+}
+
+
+// ========================================
 // CONTROLES DO JOGADOR (seta direita + pulo)
 // ========================================
 window.addEventListener("keydown", (e) => {
+
+    // Se tutorial está aberto, fecha ao pressionar qualquer tecla
+    const tutorial = document.getElementById("tutorial");
+    if(tutorial.style.display !== "none" && tutorial.style.display !== ""){
+        tutorial.style.display = "none";
+        gameActive = true;
+        startRunLoop();
+        return;
+    }
 
     if(!gameActive) return;
 
@@ -94,6 +164,15 @@ window.addEventListener("keyup", (e) => {
 const runBtn = document.getElementById("runBtn");
 
 runBtn.addEventListener("click", () => {
+    // Se tutorial está aberto, fecha
+    const tutorial = document.getElementById("tutorial");
+    if(tutorial.style.display !== "none" && tutorial.style.display !== ""){
+        tutorial.style.display = "none";
+        gameActive = true;
+        startRunLoop();
+        return;
+    }
+
     if(!gameActive) return;
     if(jumped) return;
     movingRight = true;
@@ -136,13 +215,16 @@ function startGame(selected){
     // Mostra a tela do jogo
     document.getElementById("game").style.display = "block";
 
+    // Mostra tutorial
+    document.getElementById("tutorial").style.display = "flex";
+
     // Reseta o estado do controle
     clearInterval(runLoop);
     pos = 240;
     frame = 0;
     movingRight = false;
     jumped = false;
-    gameActive = true;
+    gameActive = false; // Não ativa até fechar tutorial
 
     // Posição inicial do personagem
     player.src = "assets/idle_1.png";
@@ -164,9 +246,6 @@ function startGame(selected){
 
     flag.style.display = "block";
     reward.style.display = "block";
-
-    // Começa o loop de corrida (só anda enquanto a seta estiver pressionada)
-    startRunLoop();
 }
 
 
@@ -402,6 +481,16 @@ function gameOver(){
         document.getElementById("gameOverImage")
             .src = "assets/gameover_junior.png";
     }
+
+    // Mostra dica aleatória
+    const tips = [
+        "Dica: Pressione PULAR antes de chegar na ponte!",
+        "Dica: Não espere até o último segundo para pular!",
+        "Dica: Segure a seta direita e aperte espaço no momento certo!",
+        "Dica: O pulo é mais curto do que parece, comece cedo!"
+    ];
+    const randomTip = tips[Math.floor(Math.random() * tips.length)];
+    document.getElementById("gameOverTip").textContent = randomTip;
 }
 
 
@@ -414,7 +503,7 @@ function retry(){
     document.getElementById("gameOver")
         .style.display = "none";
 
-    // Recomeça
+    // Recomeça (mostra tutorial novamente)
     startGame(mode);
 }
 
@@ -431,6 +520,9 @@ function backMenu(){
     // Esconde game over
     document.getElementById("gameOver")
         .style.display = "none";
+
+    // Esconde tutorial se estiver aberto
+    document.getElementById("tutorial").style.display = "none";
 
     // Esconde tela do jogo
     document.getElementById("game")

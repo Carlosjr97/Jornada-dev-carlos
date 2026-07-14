@@ -16,22 +16,26 @@
         <img src="assets/namegame.png">
     </div>
 
-    <div id="player-preview">
-        <img id="previewSprite" src="assets/idle_1.png">
-    </div>
+    <div id="scenario">
 
-    <div id="xl125">
+        <img id="cenarioImg" src="assets/cenario.png" alt="">
+
         <img id="xl125" src="assets/xl125.png">
-    </div>
 
-    <div class="doors">
-
-        <div class="door" onclick="startGame('estagio')">
-            <img src="assets/door_estagio.png">
+        <div id="player-preview">
+            <img id="previewSprite" src="assets/idle_1.png">
         </div>
 
-        <div class="door" onclick="startGame('junior')">
-            <img src="assets/door_junior.png">
+        <div class="doors">
+
+            <div class="door" onclick="startGame('estagio')">
+                <img src="assets/door_estagio.png">
+            </div>
+
+            <div class="door" onclick="startGame('junior')">
+                <img src="assets/door_junior.png">
+            </div>
+
         </div>
 
     </div>
@@ -77,7 +81,15 @@
 
     <button id="runBtn">Correr</button>
 
-    <button id="jumpBtn" onclick="tryJump()">Pular</button>
+    <button id="jumpBtn" onclick="handleJumpBtnClick()">Pular</button>
+
+    <div id="tutorial">
+        <div class="tutorial-box">
+            <p>Aperte o botão <strong>Correr</strong> para avançar.</p>
+            <p>Aperte o botão <strong>Pular</strong> para atravessar a ponte quebrada.</p>
+            <p>Toque na tela para começar!</p>
+        </div>
+    </div>
 
 </div>
 
