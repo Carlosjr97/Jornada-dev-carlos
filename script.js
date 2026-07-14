@@ -218,6 +218,10 @@ function startGame(selected){
     // Mostra tutorial
     document.getElementById("tutorial").style.display = "flex";
 
+    // Garante que os botões de controle estejam visíveis
+    runBtn.style.display = "";
+    document.getElementById("jumpBtn").style.display = "";
+
     // Reseta o estado do controle
     clearInterval(runLoop);
     pos = 240;
@@ -469,6 +473,10 @@ function gameOver(){
     // Mostra tela escura
     document.getElementById("gameOver")
         .style.display = "flex";
+
+    // Some com os botões de controle
+    runBtn.style.display = "none";
+    document.getElementById("jumpBtn").style.display = "none";
 
     // Escolhe qual painel mostrar
     if(mode === "estagio"){

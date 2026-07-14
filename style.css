@@ -320,6 +320,12 @@ body{
     max-width:90%;
 }
 
+#gameOverTip{
+    color:white;
+    margin-top:15px;
+    font-size:18px;
+}
+
 .buttons{
     margin-top:20px;
 }
